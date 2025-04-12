@@ -84,12 +84,11 @@ answer_prompt = "Your answer: "
 running = True
 while running:
     # Event handling
-    #print(f"Session Stats — Correct: {session_stats['correct']}, Wrong: {session_stats['wrong']}")
+            # Handle click on stats button
 
     for event in pygame.event.get():
-        # Handle click on stats button
-        if event.type == pygame.MOUSEBUTTONDOWN and stats_button_rect.collidepoint(event.pos):
-            print(f"Session Stats — Correct: {session_stats['correct']}, Wrong: {session_stats['wrong']}")
+        #if event.type == pygame.MOUSEBUTTONDOWN and stats_button_rect.collidepoint(event.pos):
+        # TODO: have this buttom open up a question stats page.
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
@@ -187,6 +186,9 @@ while running:
 
     # Drawing
     screen.fill(WHITE)  # clear screen with white background
+    # Draw session statistics
+    stats_display = font.render(f"Correct: {session_stats['correct']}  Wrong: {session_stats['wrong']}", True, BLACK)
+    screen.blit(stats_display, (10, 10))
     if mode == "NAME":
         # Display name prompt and the current input for name
         prompt_surface = font.render(name_prompt, True, BLACK)
