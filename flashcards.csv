@@ -1,0 +1,3 @@
+"List the four layers of the TCP/IP model.","application, transport, internetworing, link"
+"How many bits are in an IPv4 address?","32"
+"Which shell command sends an ICMP packet to an IP address and requests an echo packet to be sent back?","ping"
