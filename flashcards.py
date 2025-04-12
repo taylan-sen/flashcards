@@ -59,6 +59,16 @@ def save_user_data():
     with open(DATA_FILE, 'w') as f:
         json.dump(user_data, f, indent=4)
 
+
+# Track session performance
+session_stats = {
+    "correct": 0,
+    "wrong": 0
+}
+
+# Stats button setup
+stats_button_rect = pygame.Rect(WIDTH - 120, 10, 100, 30)
+
 # Initial state
 mode = "NAME"        # modes: "NAME", "QUESTION", "FEEDBACK"
 name_input = ""      # to store typed name
@@ -74,7 +84,12 @@ answer_prompt = "Your answer: "
 running = True
 while running:
     # Event handling
+    #print(f"Session Stats — Correct: {session_stats['correct']}, Wrong: {session_stats['wrong']}")
+
     for event in pygame.event.get():
+        # Handle click on stats button
+        if event.type == pygame.MOUSEBUTTONDOWN and stats_button_rect.collidepoint(event.pos):
+            print(f"Session Stats — Correct: {session_stats['correct']}, Wrong: {session_stats['wrong']}")
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
@@ -125,6 +140,10 @@ while running:
                     if current_question is not None:
                         user_answer = answer_input.strip()
                         # Check answer (case-insensitive)
+                        if user_answer.lower() == current_answer.strip().lower():
+                            session_stats['correct'] += 1
+                        else:
+                            session_stats['wrong'] += 1
                         if user_answer.lower() == current_answer.strip().lower():
                             feedback_message = "Correct! 🙂"
                             # Update stats
@@ -192,6 +211,12 @@ while running:
         screen.blit(feedback_surf, (50, 200))
         continue_msg = font.render("Press Enter to continue...", True, BLACK)
         screen.blit(continue_msg, (50, 250))
+    
+    # Draw stats button
+    pygame.draw.rect(screen, (180, 180, 180), stats_button_rect)
+    stats_text = font.render("Stats", True, BLACK)
+    screen.blit(stats_text, (stats_button_rect.x + 20, stats_button_rect.y + 5))
+
     # Update the display
     pygame.display.flip()
     clock.tick(30)  # limit to 30 frames per second
